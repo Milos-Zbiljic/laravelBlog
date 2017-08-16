@@ -17,6 +17,7 @@ class CommentsController extends Controller
 
         $post->addComment(request('body'));
 
+        \Mail::to($post->user->email)->send(new \App\Mail\CommentReceived($post));
 
         return back();
     }
