@@ -21,6 +21,13 @@
         </div>
 
         <div class="form-group">
+            <label for="tags">Tags: </label> <br>
+            @foreach($tags as $tag)
+                <input type="checkbox" id="tag-{{ $tag->name }}" name="tags[]" value="{{ $tag->id }}">{{ $tag->name }} <br>
+            @endforeach
+        </div>
+
+        <div class="form-group">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 

@@ -13,7 +13,7 @@ class PostsController extends Controller
 
     public function index()
     {
-        $posts = Post::with('user')->paginate(10);
+        $posts = Post::with('user')->latest()->paginate(10);
 
         return view('posts.index', ['posts' => $posts]);
     }
@@ -27,15 +27,17 @@ class PostsController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $tags = \App\Tag::all();
+
+        return view('posts.create', compact('tags'));
     }
 
     public function store()
     {
-
         $this->validate(request(), [
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'tags' => 'required|array',
         ]);
 
         $post = new Post;
@@ -45,6 +47,8 @@ class PostsController extends Controller
         $post->published = false;
 
         $post->save();
+
+        $post->tags()->attach(request('tags'));
 
 
         return redirect('/posts');
